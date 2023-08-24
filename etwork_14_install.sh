@@ -58,7 +58,7 @@ sudo apt-get install git python3 python3-pip build-essential wget python3-dev py
 sudo pip3 install psycopg2-binary pdfminer.six -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo -H pip3 install -r https://raw.githubusercontent.com/erp-texh-2022/Etwork-14.0/main/requirements.txt
+sudo -H pip3 install -r https://raw.githubusercontent.com/erp-texh-2022/Etworkk-14.0/main/requirements.txt
 
 echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
 sudo apt-get install nodejs npm -y
@@ -96,7 +96,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install etwork
 #--------------------------------------------------
 echo -e "\n==== Installing etwork Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/erp-texh-2022/Etwork-14.0 $OE_HOME_EXT/
+sudo git clone --depth 1 --branch $OE_VERSION https://github.com/erp-texh-2022/Etworkk-14.0 $OE_HOME_EXT/
 
 if [ $IS_ENTERPRISE = "True" ]; then
     # etwork Enterprise install!
