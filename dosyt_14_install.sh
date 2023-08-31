@@ -1,10 +1,10 @@
-OE_USER="etwork"
+OE_USER="dosyt14"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
 
 OE_PORT="8068"
-# IMPORTANT! This script contains extra libraries that are specifically needed for etwork 14.0
+# IMPORTANT! This script contains extra libraries that are specifically needed for dosyt 14.0
 OE_VERSION="main"
 
 IS_ENTERPRISE="False"
@@ -46,7 +46,7 @@ sudo apt-get upgrade -y
 echo -e "\n---- Install PostgreSQL Server ----"
 sudo apt-get install postgresql postgresql-server-dev-all -y
 
-echo -e "\n---- Creating the etwork PostgreSQL User  ----"
+echo -e "\n---- Creating the dosyt PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
 #--------------------------------------------------
@@ -58,7 +58,7 @@ sudo apt-get install git python3 python3-pip build-essential wget python3-dev py
 sudo pip3 install psycopg2-binary pdfminer.six -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo -H pip3 install -r https://raw.githubusercontent.com/erp-texh-2022/Etworkk-14.0/main/requirements.txt
+sudo -H pip3 install -r https://raw.githubusercontent.com/erp-texh-2022/dosyt14c_source/main/requirements.txt
 
 echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
 sudo apt-get install nodejs npm -y
@@ -68,7 +68,7 @@ sudo npm install -g rtlcss
 # Install Wkhtmltopdf if needed
 #--------------------------------------------------
 if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
-  echo -e "\n---- Install wkhtml and place shortcuts on correct place for etwork 14 ----"
+  echo -e "\n---- Install wkhtml and place shortcuts on correct place for dosyt 14 ----"
   #pick up correct one from x64 & x32 versions:
   if [ "`getconf LONG_BIT`" == "64" ];then
       _url=$WKHTMLTOX_X64
@@ -83,7 +83,7 @@ else
   echo "Wkhtmltopdf isn't installed due to the choice of the user!"
 fi
 
-echo -e "\n---- Create etwork system user ----"
+echo -e "\n---- Create dosyt system user ----"
 sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'DOSYT1468' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
@@ -93,13 +93,13 @@ sudo mkdir /var/log/$OE_USER
 sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 
 #--------------------------------------------------
-# Install etwork
+# Install dosyt
 #--------------------------------------------------
-echo -e "\n==== Installing etwork Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/erp-texh-2022/Etworkk-14.0 $OE_HOME_EXT/
+echo -e "\n==== Installing dosyt Server ===="
+sudo git clone --depth 1 --branch $OE_VERSION https://github.com/erp-texh-2022/dosyt14c_source $OE_HOME_EXT/
 
 if [ $IS_ENTERPRISE = "True" ]; then
-    # etwork Enterprise install!
+    # dosyt Enterprise install!
     sudo pip3 install psycopg2-binary pdfminer.six
     echo -e "\n--- Create symlink for node"
     sudo ln -s /usr/bin/nodejs /usr/bin/node
@@ -159,11 +159,11 @@ sudo chmod 640 /etc/${OE_CONFIG}.conf
 
 echo -e "* Create startup file"
 sudo su root -c "echo '#!/bin/sh' >> $OE_HOME_EXT/start.sh"
-sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/etwork-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
+sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/dosyt-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
 sudo chmod 755 $OE_HOME_EXT/start.sh
 
 #--------------------------------------------------
-# Adding etwork as a deamon (initscript)
+# Adding dosyt as a deamon (initscript)
 #--------------------------------------------------
 
 echo -e "* Create init file"
@@ -178,13 +178,13 @@ cat <<EOF > ~/$OE_CONFIG
 # Default-Start: 2 3 4 5
 # Default-Stop: 0 1 6
 # Short-Description: Enterprise Business Applications
-# Description: etwork Business Applications
+# Description: dosyt Business Applications
 ### END INIT INFO
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
-DAEMON=$OE_HOME_EXT/etwork-bin
+DAEMON=$OE_HOME_EXT/dosyt-bin
 NAME=$OE_CONFIG
 DESC=$OE_CONFIG
-# Specify the user name (Default: etwork).
+# Specify the user name (Default: dosyt).
 USER=$OE_USER
 # Specify an alternate config file (Default: /etc/openerp-server.conf).
 CONFIGFILE="/etc/${OE_CONFIG}.conf"
@@ -238,7 +238,7 @@ sudo mv ~/$OE_CONFIG /etc/init.d/$OE_CONFIG
 sudo chmod 755 /etc/init.d/$OE_CONFIG
 sudo chown root: /etc/init.d/$OE_CONFIG
 
-echo -e "* Start etwork on Startup"
+echo -e "* Start dosyt on Startup"
 sudo update-rc.d $OE_CONFIG defaults
 
 #--------------------------------------------------
@@ -346,9 +346,9 @@ echo "User PostgreSQL: $OE_USER"
 echo "Code location: $OE_USER"
 echo "Addons folder: $OE_USER/$OE_CONFIG/addons/"
 echo "Password superadmin (database): $OE_SUPERADMIN"
-echo "Start etwork service: sudo service $OE_CONFIG start"
-echo "Stop etwork service: sudo service $OE_CONFIG stop"
-echo "Restart etwork service: sudo service $OE_CONFIG restart"
+echo "Start dosyt service: sudo service $OE_CONFIG start"
+echo "Stop dosyt service: sudo service $OE_CONFIG stop"
+echo "Restart dosyt service: sudo service $OE_CONFIG restart"
 if [ $INSTALL_NGINX = "True" ]; then
   echo "Nginx configuration file: /etc/nginx/sites-available/etworkent1454"
 fi
